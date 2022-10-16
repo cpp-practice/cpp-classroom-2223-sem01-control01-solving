@@ -133,10 +133,10 @@ void set_text(Post* post, char const* new_text) {
 }
 
 void replace_with_stars(Post* post, char const* pattern) {
+  auto l = strlen(pattern);
   while (post) {
     auto where = post->text;
     while((where = std::strstr(where, pattern))) {
-      auto l = strlen(pattern);
       std::memset(where, '*', l);
       where += l;
     }
