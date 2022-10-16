@@ -12,3 +12,5 @@ Post* previous(Post const* post);
 
 char const* get_user(Post const* post); // возвращает автора поста
 char const* get_text(Post const* post); // возвращает сообщение в посте
+
+Post* remove_by_content(Post* head, char const* content);

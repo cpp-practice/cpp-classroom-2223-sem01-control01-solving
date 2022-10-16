@@ -57,6 +57,35 @@ char const* get_text(Post const* post) {
     return post->text;
 }
 
+
+Post* remove_by_content(Post* head, char const* content)
+{
+    // prev <- curr <- next
+    Post* curr = head;
+    Post* next = nullptr;
+
+    while (curr != nullptr) {
+        auto prev = curr->tail;
+
+        if (std::strstr(get_text(curr), content)) {
+            deletePost(curr);
+
+            if (next) // prev <- curr <- next
+                next->tail = prev;
+            else      // prev <- [curr/head]
+                head = prev;
+        }
+        else {
+            next = curr;
+        }
+
+        curr = prev;
+    }
+
+    return head;
+}
+
+
 // for TASK_3
 //static std::uint64_t get_current_time() {
 //    static std::uint64_t current_time = 0;
