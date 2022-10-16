@@ -8,6 +8,7 @@ struct Post {
     char const *user;
     char *text;
     Post *tail;
+    std::uint64_t ts;
 };
 
 void deletePost(const Post *head);
@@ -19,6 +20,12 @@ char *copyText(char const* text) {
     return new_text;
 }
 
+// for TASK_3
+static std::uint64_t get_current_time() {
+    static std::uint64_t current_time = 0;
+    return current_time++;
+}
+
 Post *create_post(
         char const *user,
         char const *text,
@@ -28,6 +35,7 @@ Post *create_post(
     new_post->user = copyText(user);
     new_post->text = copyText(text);
     new_post->tail = head;
+    new_post->ts = get_current_time();
     return new_post;
 }
 
@@ -85,9 +93,36 @@ Post* remove_by_content(Post* head, char const* content)
     return head;
 }
 
+std::uint64_t timestamp(Post const* post) {
+  return post->ts;
+}
 
-// for TASK_3
-//static std::uint64_t get_current_time() {
-//    static std::uint64_t current_time = 0;
-//    return current_time++;
-//}
+Post* merge(Post* head_1, Post* head_2) {
+  Post* new_head = nullptr;
+  Post* last = nullptr;
+  if (head_1->ts >= head_2->ts) {
+    new_head = last = head_1;
+    head_1 = head_1->tail;
+  } else {
+    new_head = last = head_2;
+    head_2 = head_2->tail;
+  }
+  while (head_1 && head_2) {
+    if (head_1->ts >= head_2->ts) {
+      last->tail = head_1;
+      head_1 = head_1->tail;
+    } else {
+      last->tail = head_2;
+      head_2 = head_2->tail;
+    }
+    last = last->tail;
+  }
+
+  if (head_1) {
+    last->tail = head_1;
+  } else {
+    last->tail = head_2;
+  }
+
+  return new_head;
+}
