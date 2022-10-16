@@ -126,3 +126,20 @@ Post* merge(Post* head_1, Post* head_2) {
 
   return new_head;
 }
+
+void set_text(Post* post, char const* new_text) {
+  delete[] post->text;
+  post->text = copyText(new_text);
+}
+
+void replace_with_stars(Post* post, char const* pattern) {
+  while (post) {
+    auto where = post->text;
+    while((where = std::strstr(where, pattern))) {
+      auto l = strlen(pattern);
+      std::memset(where, '*', l);
+      where += l;
+    }
+    post = post->tail;
+  }
+}

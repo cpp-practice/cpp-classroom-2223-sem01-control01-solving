@@ -25,3 +25,11 @@ std::uint64_t timestamp(Post const* post);
 // сливает две ленты в одну так, чтобы посты шли в хронологическом порядке
 // посты из аргументов надо переиспользовать (без копирования)
 Post* merge(Post* head_1, Post* head_2);
+
+// Устанавливает `new_text` как текст поста `post`
+// (вместо старого текста)
+void set_text(Post* post, char const* new_text);
+
+// Заменяет все вхождения `pattern` во всех постах ленты
+// на число звёздочек, равное длине `pattern` в тексте поста
+void replace_with_stars(Post* post, char const* pattern);
